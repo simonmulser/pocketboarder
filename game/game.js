@@ -34,10 +34,11 @@ window.onload = function() {
 
     // function executed on preload
 	function preload() {
-        game.load.image("player","game/boarder_left.png");	
+        game.load.image("player_left","game/boarder_left.png");	
+        game.load.image("player_right","game/boarder_right.png");	
         game.load.image("slope","game/slope.jpg");
 
-        game.load.spritesheet("boarder", "game/boarder.png", 92, 98, 2);
+        //game.load.spritesheet("boarder", "game/boarder.png", 92, 98, 2);
 	}
 
 	// function to scale up the game to full screen
@@ -64,8 +65,8 @@ window.onload = function() {
         // going full screen
         goFullScreen();
         // adding the player on stage
-        player = game.add.sprite(92, 98, "boarder");
-        player.frame = 2;
+        player = game.add.sprite(92, 98, "player_left");
+        //player.frame = 2;
 
         // setting player anchor point
         player.anchor.setTo(0.5);
@@ -100,6 +101,19 @@ window.onload = function() {
             player.body.velocity.x += o.gamma/10;
             player.body.velocity.y += o.beta/50;
 
+        
+
+            if (o.gamma > 0) {
+                //player.frame = 2;
+                //player.play();
+                player.loadTexture("player_right", 0);
+            }
+            else {
+                player.loadTexture("player_left", 0);
+                //player.frame = 1;
+                //player.play();
+            }
+
             if (player.body.velocity.y < 0)
                 player.body.velocity.y = 0;
         });
@@ -111,10 +125,9 @@ window.onload = function() {
 
     function update() {
 
-        if (player.body.velocity.x > 0)
-            player.frame = 2;
-        else
-            player.frame = 1;
+        //timeDisplay.textContent = player.body.velocity.x;
+
+        
 
         //console.log("update");
         //console.log("speedX: " + speedX);
