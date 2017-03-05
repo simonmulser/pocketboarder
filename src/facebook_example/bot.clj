@@ -24,6 +24,20 @@
                                                                   :title "Graukogel 🚠"
                                                                   :payload "GRAUKOGEL"}]}}}))
 
+(defn send-game [sender-id]
+  (fb/send-message sender-id {:attachment {
+                                            :type "template"
+                                            :payload {
+                                                      :template_type "button"
+                                                      :text "Ready...set...go!"
+                                                      :buttons [
+                                                                { :type "web_url"
+                                                                  :url "https://simonmulser.github.io/pocketboarder/"
+                                                                  :title "START"
+                                                                  :webview_height_ratio "full"
+                                                                  :messenger_extensions true
+                                                                  :webview_share_button "hide"}]}}}))
+
 (defn on-message [payload]
   (println "on-message payload:")
   (println payload)
@@ -46,28 +60,20 @@
       (= postback "FILZMOOS")
       ( do
         (fb/send-message sender-id (fb/text-message "Right on! Remember your goal is to get the fastest speed and to avoid obstacles. Good luck at Filzmoos! ❄️️ 💪"))
-        (fb/send-message sender-id (fb/image-message "http://www.stoefflerhof.com/de/images/sommer-winter/dreizinnen-winter-gr.jpg")))
+        (fb/send-message sender-id (fb/image-message "http://www.stoefflerhof.com/de/images/sommer-winter/dreizinnen-winter-gr.jpg"))
+        (send-game sender-id))
+
       (= postback "RAMSAU")
       ( do
         (fb/send-message sender-id (fb/text-message "Sweet brah. We hope you're ready for Ramsau! Remember the goal is to go as fast as possible while watching out for the obstacles. 😎"))
         (fb/send-message sender-id (fb/image-message "https://s-media-cache-ak0.pinimg.com/564x/22/ab/cc/22abccf94cd21274c471a665fb3089cc.jpg"))
-        (fb/send-message sender-id {:attachment {
-                                                  :type "template"
-                                                  :payload {
-                                                            :template_type "button"
-                                                            :text "Ready...set...go!"
-                                                            :buttons [
-                                                                      { :type "web_url"
-                                                                        :url "https://phaser.io/examples/v2/weapon/asteroids"
-                                                                        :title "START"
-                                                                        :webview_height_ratio "full"
-                                                                        :messenger_extensions true
-                                                                        :webview_share_button "hide"}]}}}))
+        (send-game sender-id))
 
       (= postback "GRAUKOGEL")
       ( do
         (fb/send-message sender-id (fb/text-message "Sick! Enjoy Graukogel and don't forget your goals! Get the fastest time possible without wiping out. Let's go!⛄"))
-        (fb/send-message sender-id (fb/image-message "http://www.skiamade.com/website/var/tmp/image-thumbnails/1750000/1759940/thumb__headerImage/alpendorf-betterpark-snowboard.jpeg")))
+        (fb/send-message sender-id (fb/image-message "http://www.skiamade.com/website/var/tmp/image-thumbnails/1750000/1759940/thumb__headerImage/alpendorf-betterpark-snowboard.jpeg"))
+        (send-game sender-id))
 
       (= postback "GET_STARTED")
       (send-greeting-message sender-id)
