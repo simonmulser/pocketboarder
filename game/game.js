@@ -76,8 +76,8 @@ window.onload = function() {
 
     // function executed on preload
 	function preload() {
-        game.load.image("player","player.png");	
-        game.load.image("slope","slope.jpg");
+        game.load.image("player","game/player.png");	
+        game.load.image("slope","game/slope.jpg");
 	}
 
 	// function to scale up the game to full screen
