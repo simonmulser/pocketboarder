@@ -13,15 +13,15 @@
                                                       :text "Slope options:"
                                                       :buttons [
                                                                 { :type "postback"
-                                                                  :title "Filzmoos"
+                                                                  :title "Filzmoos 🗻"
                                                                   :payload "FILZMOOS"}
 
                                                                 { :type "postback"
-                                                                  :title "Ramsau"
+                                                                  :title "Ramsau 🌁"
                                                                   :payload "RAMSAU"}
 
                                                                 { :type "postback"
-                                                                  :title "Graukogel"
+                                                                  :title "Graukogel 🚠"
                                                                   :payload "GRAUKOGEL"}]}}}))
 
 (defn on-message [payload]
