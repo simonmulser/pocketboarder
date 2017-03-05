@@ -36,8 +36,8 @@
   (-> (wrap-defaults fb-routes api-defaults)
       (wrap-keyword-params)
       (wrap-json-params)
-      (wrap-cors fb-routes :access-control-allow-origin [#"*"]
-                       :access-control-allow-methods [:get :put :post :delete])))
+      (wrap-cors :access-control-allow-origin #".*"
+                 :access-control-allow-methods [:get :put :post :delete])))
 
 (defn -main [& args]
   (println "Started up"))
