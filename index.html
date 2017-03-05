@@ -30,11 +30,12 @@
 			  js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
 			  fjs.parentNode.insertBefore(js, fjs);
 			}(document, 'script', 'Messenger'));
-			
+
 			function closeBrowser() {
 
+			alert("test1");
 				MessengerExtensions.requestCloseBrowser(function success() {
-                console.log("test-success")
+								alert("test2");
 
                 var http = new XMLHttpRequest();
                 var url = "get_data.php";
