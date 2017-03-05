@@ -36,7 +36,8 @@
                                                                   :title "START"
                                                                   :webview_height_ratio "full"
                                                                   :messenger_extensions true
-                                                                  :webview_share_button "hide"}]}}}))
+                                                                  :webview_share_button "hide"}]}}})
+  (fb/send-message sender-id (fb/text-message "Good run! ❄️️ 💪")))
 
 (defn on-message [payload]
   (println "on-message payload:")
