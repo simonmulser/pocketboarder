@@ -111,7 +111,7 @@ window.onload = function() {
 
     function update() {
 
-        if (player.body.speedX > 0)
+        if (speedX > 0)
             player.frame = 2;
         else
             player.frame = 1;
@@ -141,29 +141,8 @@ window.onload = function() {
 
         if (player.y > 3800) {
             timeDisplay.textContent = "FINISH";
-
             
-				MessengerExtensions.requestCloseBrowser(function success() {
-					console.log("test-success")
-
-					var http = new XMLHttpRequest();
-					var url = "get_data.php";
-					var params = {data: "data"};
-					http.open("POST", "https://ff3778bb.ngrok.io/webhook", true);
-
-					//Send the proper header information along with the request
-					http.setRequestHeader("Content-type", "application/json");
-
-					http.onreadystatechange = function() {//Call a function when the state changes.
-					    if(http.readyState == 4 && http.status == 200) {
-					        alert(http.responseText);
-					    }
-					}
-					http.send(JSON.stringify(data));
-
-				}, function error(err) {
-					console.log("test-err")
-				});
+            closeBrowser();
         }
         else
             timeDisplay.textContent = formatTime(this.game.time.totalElapsedSeconds());
