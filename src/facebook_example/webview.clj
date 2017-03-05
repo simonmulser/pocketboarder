@@ -5,5 +5,5 @@
             [facebook-example.facebook :as fb]))
 
 (defn handle-message [payload]
-  (println "handle-messge webview payload:")
+  (println "JUHU handle-messge webview payload:")
   (println payload))
