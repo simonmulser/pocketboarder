@@ -111,7 +111,7 @@ window.onload = function() {
 
     function update() {
 
-        if (player.body.velocity.x > 0)
+        if (player.body.speedX > 0)
             player.frame = 2;
         else
             player.frame = 1;
@@ -142,7 +142,7 @@ window.onload = function() {
         if (player.y > 3800) {
             timeDisplay.textContent = "FINISH";
 
-            window.extAsyncInit = function() {
+            
 				MessengerExtensions.requestCloseBrowser(function success() {
 					console.log("test-success")
 
@@ -164,7 +164,6 @@ window.onload = function() {
 				}, function error(err) {
 					console.log("test-err")
 				});
-			}
         }
         else
             timeDisplay.textContent = formatTime(this.game.time.totalElapsedSeconds());
