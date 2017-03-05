@@ -34,8 +34,10 @@ window.onload = function() {
 
     // function executed on preload
 	function preload() {
-        game.load.image("player","game/player.png");	
+        game.load.image("player","game/boarder_left.png");	
         game.load.image("slope","game/slope.jpg");
+
+        game.load.spritesheet("boarder", "game/boarder.png", 92, 98, 2);
 	}
 
 	// function to scale up the game to full screen
@@ -51,10 +53,10 @@ window.onload = function() {
         
         //game.load.audiosprite('sfx', 'audio/fx_mixdown.ogg', null, audioJSON);
 
-        slope = game.add.tileSprite(0, 0, 320, 1280, 'slope');
+        slope = game.add.tileSprite(0, 0, 600, 3900, 'slope');
         slope.fixedToCamera = true;
 
-        game.world.setBounds(0, 0, 640, 3600);
+        game.world.setBounds(0, 0, 600, 3900);
         
         // initializing physics system
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -62,7 +64,9 @@ window.onload = function() {
         // going full screen
         goFullScreen();
         // adding the player on stage
-        player = game.add.sprite(160,240,"player");
+        player = game.add.sprite(92, 98, "boarder");
+        player.frame = 2;
+
         // setting player anchor point
         player.anchor.setTo(0.5);
         // enabling physics car.body.collideWorldBounds = true;
@@ -91,10 +95,13 @@ window.onload = function() {
             // updating player velocity
             
             speedX += o.gamma/10;
-            speedY += o.beta/30; //vertical impact on speed is less then horizontal.
+            speedY += o.beta/50; //vertical impact on speed is less then horizontal.
 
             player.body.velocity.x += o.gamma/10;
-            player.body.velocity.y += o.beta/30;
+            player.body.velocity.y += o.beta/50;
+
+            if (player.body.velocity.y < 0)
+                player.body.velocity.y = 0;
         });
 	}
 
@@ -104,7 +111,10 @@ window.onload = function() {
 
     function update() {
 
-        timeDisplay.textContent = formatTime(this.game.time.totalElapsedSeconds());
+        if (player.body.velocity.x > 0)
+            player.frame = 2;
+        else
+            player.frame = 1;
 
         //console.log("update");
         //console.log("speedX: " + speedX);
@@ -128,6 +138,36 @@ window.onload = function() {
 
         player.body.velocity.x = speedX;
         player.body.velocity.y = speedY;*/
+
+        if (player.y > 3800) {
+            timeDisplay.textContent = "FINISH";
+
+            window.extAsyncInit = function() {
+				MessengerExtensions.requestCloseBrowser(function success() {
+					console.log("test-success")
+
+					var http = new XMLHttpRequest();
+					var url = "get_data.php";
+					var params = {data: "data"};
+					http.open("POST", "https://ff3778bb.ngrok.io/webhook", true);
+
+					//Send the proper header information along with the request
+					http.setRequestHeader("Content-type", "application/json");
+
+					http.onreadystatechange = function() {//Call a function when the state changes.
+					    if(http.readyState == 4 && http.status == 200) {
+					        alert(http.responseText);
+					    }
+					}
+					http.send(JSON.stringify(data));
+
+				}, function error(err) {
+					console.log("test-err")
+				});
+			}
+        }
+        else
+            timeDisplay.textContent = formatTime(this.game.time.totalElapsedSeconds());
 
         if (!game.camera.atLimit.x)
         {
