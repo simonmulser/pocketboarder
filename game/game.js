@@ -1,69 +1,25 @@
 window.onload = function() {
 
-    /*var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
-
-    function preload() {
-
-        game.load.image('stars', 'assets/misc/starfield.jpg');
-        game.load.image('ship', 'assets/sprites/thrust_ship2.png');
-    }
-
-    var ship;
-    var starfield;
-    var cursors;
-
-    function create() {
-
-        game.world.setBounds(0, 0, 1920, 1200);
-
-        game.physics.startSystem(Phaser.Physics.P2JS);
-        game.physics.p2.defaultRestitution = 0.8;
-
-        starfield = game.add.tileSprite(0, 0, 800, 600, 'stars');
-        starfield.fixedToCamera = true;
-
-        ship = game.add.sprite(200, 200, 'ship');
-
-        game.physics.p2.enable(ship);
-
-        game.camera.follow(ship);
-
-        cursors = game.input.keyboard.createCursorKeys();
-    }
-
-    function update() {
-
-        if (cursors.left.isDown)
-        {
-            ship.body.thrustLeft(100);
+    /*var audioJSON = {
+        spritemap: {
+        'aua1': {
+            start: 1,
+            end: 2,
+            loop: false
+        },
+        'aua2': {
+            start: 3,
+            end: 3.5,
+            loop: false
+        },
+        'aua3': {
+            start: 4,
+            end: 7.2,
+            loop: false
         }
-        else if (cursors.right.isDown)
-        {
-            ship.body.thrustRight(100);
-        }
-
-        if (cursors.up.isDown)
-        {
-            ship.body.thrust(400);
-        }
-        else if (cursors.down.isDown)
-        {
-            ship.body.reverse(400);
-        }
-
-        if (!game.camera.atLimit.x)
-        {
-            starfield.tilePosition.x -= (ship.body.velocity.x * game.time.physicsElapsed);
-        }
-
-        if (!game.camera.atLimit.y)
-        {
-            starfield.tilePosition.y -= (ship.body.velocity.y * game.time.physicsElapsed);
-        }
-
-    }
-
-	*/// game definition, 320x480
+    };*/
+   
+    // game definition, 320x480
 	var game = new Phaser.Game(320, 480, Phaser.AUTO, "", {preload: preload, create: create, update: update});
 
     // the player
@@ -73,6 +29,8 @@ window.onload = function() {
     var deltaT;
     var speedX = 0;
     var speedY = 0;
+
+    var timeDisplay = document.getElementById("time");
 
     // function executed on preload
 	function preload() {
@@ -91,17 +49,16 @@ window.onload = function() {
 	// function to be called when the game has been created
 	function create() {
         
+        //game.load.audiosprite('sfx', 'audio/fx_mixdown.ogg', null, audioJSON);
+
         slope = game.add.tileSprite(0, 0, 320, 1280, 'slope');
         slope.fixedToCamera = true;
 
         game.world.setBounds(0, 0, 640, 3600);
         
         // initializing physics system
-        //game.physics.startSystem(Phaser.Physics.ARCADE);
+        game.physics.startSystem(Phaser.Physics.ARCADE);
         
-        game.physics.startSystem(Phaser.Physics.P2JS);
-        game.physics.p2.defaultRestitution = 0.8;
-
         // going full screen
         goFullScreen();
         // adding the player on stage
@@ -118,6 +75,9 @@ window.onload = function() {
         // setting player bounce
         player.body.bounce.set(0.2);
 
+        player.body.onCollide = new Phaser.Signal();
+        player.body.onCollide.add(onCollission, this);
+
         cursors = game.input.keyboard.createCursorKeys();
 
 
@@ -130,21 +90,24 @@ window.onload = function() {
         gyro.startTracking(function(o) {
             // updating player velocity
             
-            //speedX += o.gamma/10;
-            //speedY += o.beta/30; //vertical impact on speed is less then horizontal.
+            speedX += o.gamma/10;
+            speedY += o.beta/30; //vertical impact on speed is less then horizontal.
 
             player.body.velocity.x += o.gamma/10;
-            player.body.velocity.y += o.beta/20;
+            player.body.velocity.y += o.beta/30;
         });
 	}
 
+    function onCollission() {
+        return null;
+    }
+
     function update() {
+
+        timeDisplay.textContent = formatTime(this.game.time.totalElapsedSeconds());
 
         //console.log("update");
         //console.log("speedX: " + speedX);
-        
-
-        
 
         /*if (cursors.left.isDown)
         {
@@ -175,5 +138,9 @@ window.onload = function() {
         {
             slope.tilePosition.y -= (player.body.velocity.y * game.time.physicsElapsed);
         }
+    }
+
+    function formatTime (str) {
+        return str.toFixed(2).replace(".",":");
     }
 }
