@@ -95,8 +95,13 @@ window.onload = function() {
         slope.fixedToCamera = true;
 
         game.world.setBounds(0, 0, 640, 3600);
+        
         // initializing physics system
-        game.physics.startSystem(Phaser.Physics.ARCADE);
+        //game.physics.startSystem(Phaser.Physics.ARCADE);
+        
+        game.physics.startSystem(Phaser.Physics.P2JS);
+        game.physics.p2.defaultRestitution = 0.8;
+
         // going full screen
         goFullScreen();
         // adding the player on stage
