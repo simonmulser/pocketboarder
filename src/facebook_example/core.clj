@@ -5,12 +5,15 @@
             [ring.middleware.json :refer [wrap-json-params]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [facebook-example.facebook :as fb]
+            [facebook-example.webview :as webview]
             [facebook-example.bot :as bot]
             ; Dependencies via Heroku Example
             [compojure.handler :refer [site]]
             [clojure.java.io :as io]
             [ring.adapter.jetty :as jetty]
-            [environ.core :refer [env]]))
+            [environ.core :refer [env]]
+            [ring.middleware.cors :refer [wrap-cors]]))
+
 
 (defn splash []
   {:status 200
@@ -23,12 +26,18 @@
                    (fb/handle-message request bot/on-message bot/on-postback bot/on-attachments)
                    {:status 200})
   (GET "/webhook" request
-                  (fb/validate-webhook request)))
+                  (fb/validate-webhook request))
+  (POST "/webview" request
+                  (webview/handle-message request)
+                  {:status 200}))
+
 
 (def app
   (-> (wrap-defaults fb-routes api-defaults)
       (wrap-keyword-params)
-      (wrap-json-params)))
+      (wrap-json-params)
+      (wrap-cors fb-routes :access-control-allow-origin [#"*"]
+                       :access-control-allow-methods [:get :put :post :delete])))
 
 (defn -main [& args]
   (println "Started up"))
