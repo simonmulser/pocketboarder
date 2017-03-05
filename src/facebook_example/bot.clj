@@ -50,7 +50,20 @@
       (= postback "RAMSAU")
       ( do
         (fb/send-message sender-id (fb/text-message "Sweet brah. We hope you're ready for Ramsau! Remember the goal is to go as fast as possible while watching out for the obstacles. 😎"))
-        (fb/send-message sender-id (fb/image-message "https://s-media-cache-ak0.pinimg.com/564x/22/ab/cc/22abccf94cd21274c471a665fb3089cc.jpg")))
+        (fb/send-message sender-id (fb/image-message "https://s-media-cache-ak0.pinimg.com/564x/22/ab/cc/22abccf94cd21274c471a665fb3089cc.jpg"))
+        (fb/send-message sender-id {:attachment {
+                                                  :type "template"
+                                                  :payload {
+                                                            :template_type "button"
+                                                            :text "Ready...set...go!"
+                                                            :buttons [
+                                                                      { :type "web_url"
+                                                                        :url "https://phaser.io/examples/v2/weapon/asteroids"
+                                                                        :title "START"
+                                                                        :webview_height_ratio "full"
+                                                                        :messenger_extensions true
+                                                                        :webview_share_button "hide"}]}}}))
+
       (= postback "GRAUKOGEL")
       ( do
         (fb/send-message sender-id (fb/text-message "Sick! Enjoy Graukogel and don't forget your goals! Get the fastest time possible without wiping out. Let's go!⛄"))
