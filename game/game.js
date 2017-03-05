@@ -111,7 +111,7 @@ window.onload = function() {
 
     function update() {
 
-        if (speedX > 0)
+        if (player.body.velocity.x > 0)
             player.frame = 2;
         else
             player.frame = 1;

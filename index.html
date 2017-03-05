@@ -33,7 +33,8 @@
 
 			function closeBrowser() {
 
-			alert("test1");
+				document.getElementById("time").textContent = "closing!";
+				
 				MessengerExtensions.requestCloseBrowser(function success() {
 								alert("test2");
 
